@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <ul style="margin-top: 100px">
+        {% for post in posts %}
+            <li style="color: red">{{ post.title }} : {{ post.content }}</li>
+        {% endfor %}
+    </ul>
+
+    {#<div style="margin-top: 100px">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>#}
+{% endblock %}
