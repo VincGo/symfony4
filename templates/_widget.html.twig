@@ -1,0 +1,19 @@
+<div class="col-sm-3 ml-sm-auto blog-sidebar">
+    <!-- Categories Widget -->
+    <div class="card my-4">
+        <h5 class="card-header">Dernières infos</h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col 4">
+                    {% for info in infos %}
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="{{ path('show_post', {'id': info.id}) }}">{{ info.title }}</a>
+                            </li>
+                        </ul>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

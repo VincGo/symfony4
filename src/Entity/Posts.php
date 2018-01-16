@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostsRepository")
@@ -18,11 +19,13 @@ class Posts
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Veuillez saisir un titre")
      */
     private $title;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $content;
 

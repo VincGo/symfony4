@@ -1,25 +1,34 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <ul style="margin-top: 100px">
+    <div class="jumpotron">
+        <div class="carousel slide">
+            <img src="{{ asset('img/nba1.jpg') }}" id="slideshow" alt="Image de basket">
+            <a href="#" ><img src="{{ asset('img/left-arrow.png') }}" id="prev" class="btn-slider" alt="flèche gauche slider"></a>
+            <a href="#" ><img src="{{ asset('img/right-arrow.png') }}" id="next" class="btn-slider" alt="flèche droite slider"></a>
+        </div>
+    </div>
+
+    <ul>
         {% for post in posts %}
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-md-10 mx-auto">
-                        <div class="post-preview">
-                            <a href="{{ path('show_post', {'id': post.id}) }}">
-                                <h2 class="post-title">
-                                    {{ post.title }}
-                                </h2>
-                                <h3 class="post-subtitle">
-                                    {{ post.content }}
-                                </h3>
-                            </a>
-                        </div>
-                        <hr>
-                    </div>
+            <div class="col 8">
+                <div class="post-preview">
+                    <a href="{{ path('show_post', {'id': post.id}) }}">
+                        <h2 class="post-title">
+                            {{ post.title }}
+                        </h2>
+                        <h3 class="post-subtitle">
+                            {{ post.content }}
+                        </h3>
+                    </a>
                 </div>
+                <hr>
             </div>
         {% endfor %}
     </ul>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/slider.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
 {% endblock %}
