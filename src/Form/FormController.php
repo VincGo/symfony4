@@ -1,19 +1,19 @@
 <?php
 
 namespace App\Form;
+use App\Entity\Contact;
 use App\Entity\Posts;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 
 class FormController extends AbstractController
 {
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @Route("/form", name="app_form")
      */
     public function PostForm(Request $request)
     {
@@ -33,11 +33,28 @@ class FormController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
             $em->flush();
-
-            return $this->redirectToRoute('app_form');
         }
-        return $this->render('form.html.twig', array(
-            'form'=> $form->createView(),
-        ));
+    }
+
+    public function ContactForm(Request $request)
+    {
+        $contact = new Contact();
+
+        $formCont = $this->createFormBuilder($contact)
+            ->add('name', TextType::class)
+            ->add('email', EmailType::class)
+            ->add('subject', TextType::class)
+            ->add('message', TextType::class)
+            ->getForm();
+
+        $formCont->handleRequest($request);
+
+        if($formCont->isSubmitted() && $formCont->isValid())
+        {
+            $contact = $formCont->getData();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($contact);
+            $em->flush();
+        }
     }
 }

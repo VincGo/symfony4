@@ -13,6 +13,19 @@ class PostsRepository extends ServiceEntityRepository
         parent::__construct($registry, Posts::class);
     }
 
+    public function infoSideBar()
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->orderBy('p.id', 'DESC')
+            ->setMaxResults('5')
+        ;
+
+        $query =$qb->getQuery();
+
+        return $query->execute();
+    }
+
+
     /*
     public function findBySomething($value)
     {

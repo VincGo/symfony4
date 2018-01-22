@@ -2,35 +2,33 @@
 /**
  * Created by PhpStorm.
  * User: vincent
- * Date: 04/01/2018
- * Time: 09:14
+ * Date: 17/01/2018
+ * Time: 14:38
  */
 
 namespace App\Form;
 
-
-use App\Entity\Posts;
-use Doctrine\DBAL\Types\TextType;
+use App\Entity\Contact;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PostType extends AbstractType
+class ContactType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('content')
+            ->add('name')
+            ->add('email')
+            ->add('subject')
+            ->add('message')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Posts::class
+            'data_class' => Contact::class
         ]);
     }
-
 }
