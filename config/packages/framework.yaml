@@ -1,15 +1,16 @@
 framework:
     secret: '%env(APP_SECRET)%'
-    #default_locale: en
-    #csrf_protection: ~
+    default_locale: fr
+    csrf_protection: { enabled: true }
+    trusted_hosts: ~
     #http_method_override: true
 
     # uncomment this entire section to enable sessions
-    #session:
+    session:
     #    # With this config, PHP's native session handling is used
-    #    handler_id: ~
+         handler_id: ~
 
-    #esi: ~
-    #fragments: ~
+    esi: { enabled: true }
+    fragments: { enabled: true }
     php_errors:
         log: true

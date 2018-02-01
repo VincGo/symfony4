@@ -8,7 +8,7 @@
                     {% for info in infos %}
                         <ul class="list-unstyled mb-0">
                             <li>
-                                <a href="{{ path('show_post', {'id': info.id}) }}">{{ info.title }}</a>
+                                <a href="{{ path('blog_post', {'slug': info.slug}) }}">{{ info.title }}</a>
                             </li>
                         </ul>
                     {% endfor %}

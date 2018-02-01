@@ -3,9 +3,8 @@
         <h5 class="card-header">Laissez un commentaire:</h5>
         <div class="card-body">
             <div class="form-group">
-                {{ form_start(form) }}
-                {{ form_row(form.title, {'label': 'Nom'}) }}
-                {{ form_row(form.content, {'label': 'Commentaire'}) }}
+                {{ form_start(form, {method: 'POST', action: path('comment_new', {'postSlug': post.slug})}) }}
+                {{ form_row(form.content) }}
                 <input type="submit" value="envoyer" formnovalidate="formnovalidate">
                 {{ form_end(form) }}
             </div>
