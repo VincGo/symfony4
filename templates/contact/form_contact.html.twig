@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="col-4">
+        {{ form_start(formCont) }}
+        {{ form_row(formCont.name, {'label': 'Nom'}) }}
+        {{ form_row(formCont.email, {'label': 'E-mail'}) }}
+        {{ form_row(formCont.subject, {'label': 'Sujet'}) }}
+        {{ form_row(formCont.message, {'label': 'Message'}) }}
+        <input type="submit" value="envoyer" formnovalidate="formnovalidate">
+        {{ form_end(formCont) }}
+    </div>
+{% endblock %}

@@ -1,4 +1,22 @@
-<h1>{{ post.title }}</h1>
-<p>{{ post.content }}</p>
+{% extends 'base.html.twig' %}
 
-{{ render(controller('App\\Controller\\PostController:new')) }}
+{% block body %}
+        <div class="col-sm-8 blog-main">
+            <div class="blog-post">
+                <h2 class="blog-post-title">{{ post.title }}</h2>
+                <p class="blog-post-meta">{{ post.content }}</p>
+            </div>
+            {{ render(controller('App\\Controller\\CommentController::commentForm', {'id': post.id})) }}
+
+            {% for comment in post.comments %}
+            <div class="row post-comment">
+                <div class="col-sm-9">
+                    {{ comment.content }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+
+{% endblock %}

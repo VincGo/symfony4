@@ -1,13 +1,13 @@
 <?php
 namespace App\Controller;
-use App\Entity\Posts;
+
+use App\Entity\Post;
+use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends AbstractController
 {
@@ -17,10 +17,9 @@ class PostController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/", name="list_post")
      */
-
-    public function index(EntityManagerInterface $em)
+    public function index(PostRepository $postsRepository): Response
     {
-        $posts = $em->getRepository(Posts::class)->findAll();
+        $posts = $postsRepository->findBy(array(), array('id'=>'desc'));
 
         return $this->render('post/index.html.twig', [
             'posts' => $posts,
@@ -28,50 +27,21 @@ class PostController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @Route("/post/add", name="add_post")
+     * @param Post $post
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/post/{slug}", name="blog_post")
+     * @Method("GET")
+     *
      */
-    public function new(Request $request)
+    public function postShow(Post $post): Response
     {
-        $post = new Posts();
-
-        $form = $this->createFormBuilder($post)
-            ->add('title', TextType::class)
-            ->add('content', TextType::class)
-            ->add('save', SubmitType::class)
-            ->getForm();
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $post = $form->getData();
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($post);
-            $em->flush();
-
-            return $this->redirectToRoute('list_post');
-        }
-        return $this->render('post/new.html.twig', array(
-            'form'=> $form->createView(),
-        ));
+        return $this->render('post/show.html.twig', ['post' => $post,]);
     }
 
-    /**
-     * @Route("/{id}", name="show_post", requirements={"id": "\d+"})
-     */
-    public function show(EntityManagerInterface $em, int $id)
+    public function sideBar(PostRepository $postRepository)
     {
-        $post = $em->getRepository(Posts::class)->find($id);
-        if(null === $post){
-            throw new NotFoundHttpException();
-        }
+        $infos = $postRepository->infoSideBar();
 
-        return $this->render('post/show.html.twig', [
-           'post' => $post
-        ]);
+        return $this->render('post/_widget.html.twig', ['infos' => $infos]);
     }
-
-
 }
