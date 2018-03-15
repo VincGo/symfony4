@@ -25,7 +25,16 @@ class PostRepository extends ServiceEntityRepository
         return $query->execute();
     }
 
+    public function finByTag($value)
+    {
+        $qb = $this->createQueryBuilder('post')
+            ->leftJoin('post.tags', 'tag')
+            ->where('tag.name = :value')->setParameter('value', $value)
+            ;
+        $query = $qb->getQuery();
 
+        return $query->execute();
+    }
     /*
     public function findBySomething($value)
     {

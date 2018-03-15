@@ -4,7 +4,7 @@
         <div class="card-body">
             <div class="form-group">
                 {{ form_start(form, {method: 'POST', action: path('comment_new', {'postSlug': post.slug})}) }}
-                {{ form_row(form.content) }}
+                {{ form_row(form.content, {'label':false}) }}
                 <input type="submit" value="envoyer" formnovalidate="formnovalidate">
                 {{ form_end(form) }}
             </div>

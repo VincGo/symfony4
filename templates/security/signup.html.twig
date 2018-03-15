@@ -3,11 +3,13 @@
 {% block body %}
     <div class="col-4">
         {{ form_start(form) }}
-        {{ form_row(form.fullName, {'label': 'Nom'}) }}
-        {{ form_row(form.username, {'label': 'Pseudo'}) }}
-        {{ form_row(form.email, {'label': 'E-mail'}) }}
-        {{ form_row(form.password, {'label': 'Mot de passe'}) }}
-        <input type="submit" value="envoyer" formnovalidate="formnovalidate">
+        {{ form_row(form.fullName) }}
+        {{ form_row(form.username) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.plainPassword.first) }}
+        {{ form_row(form.plainPassword.second) }}
+
+        <button type="submit">Créer mon compte</button>
         {{ form_end(form) }}
     </div>
 {% endblock %}

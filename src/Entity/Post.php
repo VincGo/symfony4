@@ -47,21 +47,30 @@ class Post
     private $publishedAt;
 
     /**
-     * @var Comment[]|ArrayCollection
-     *
-     * @ORM\OneToMany(
-     *      targetEntity="Comment",
-     *      mappedBy="post",
-     *      orphanRemoval=true,
-     *      cascade={"persist"}
-     * )
-     * @ORM\OrderBy({"publishedAt": "DESC"})
-     */
+ * @var Comment[]|ArrayCollection
+ *
+ * @ORM\OneToMany(
+ *      targetEntity="Comment",
+ *      mappedBy="post",
+ *      orphanRemoval=true,
+ *      cascade={"persist"}
+ * )
+ * @ORM\OrderBy({"publishedAt": "DESC"})
+ */
     private $comments;
 
     /**
-     * @return mixed
+     * @var Tag[]|ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"})
+     * @ORM\OrderBy({"name": "ASC"})
      */
+    private $tags;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist"})
+     */
+    private $image;
 
     public function __construct()
     {
@@ -169,6 +178,25 @@ class Post
         $this->comments = $comments;
     }
 
+    public function addTag(Tag ...$tags): void
+    {
+        foreach ($tags as $tag) {
+            if (!$this->tags->contains($tag)) {
+                $this->tags->add($tag);
+            }
+        }
+    }
+
+    public function removeTag(Tag $tag): void
+    {
+        $this->tags->removeElement($tag);
+    }
+
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
     public function addComment(Comment $comment): void
     {
         $comment->setPost($this);
@@ -183,5 +211,13 @@ class Post
         $this->comments->removeElement($comment);
     }
 
+    public function setImage(Image $image = null)
+    {
+        $this->image = $image;
+    }
 
+    public function getImage()
+    {
+        return $this->image;
+    }
 }

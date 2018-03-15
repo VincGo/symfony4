@@ -4,55 +4,67 @@
         <meta charset="UTF-8">
         <title>{% block title %}NBA Project{% endblock %}</title>
         {% block stylesheets %}
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
             <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.png') }}">
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    {% block header %}
+        <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
             <div class="container">
-                <a class="navbar-brand" href="{{ path('list_post') }}">NBA Project</a>
-                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i class="fa fa-bars"></i>
-                </button>
+                <a class="navbar-brand" href="{{ path('list_post') }}" id="site_name">NBA Project</a>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                                <a class="nav-link" href="{{ path('list_post') }}">News</a>
+                                <a class="nav-link" href="{{ path('article_post', {tag: 'news'}) }}">News</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Dossier</a>
+                            <a class="nav-link" href="{{ path('article_post', {tag: 'boston'}) }}">Dossier</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Equipe</a>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Equipe
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('article_post', {tag: 'atlanta'}) }}">Atlanta</a>
+                                <a class="dropdown-item" href="{{ path('article_post', {tag: 'boston'}) }}">Boston</a>
+                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('contact_post') }}">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('security_login') }}">Se connecter</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('security_signup') }}">Créer un compte</a>
-                        </li>
+                        {% block navigation %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('contact_post') }}">Contact</a>
+                            </li>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li class="nav-item" >
+                                    <a id="admin" class="nav-link" href="{{ path('admin_index') }}">Admin</a>
+                                </li>
+                            {% endif %}
+                        {% endblock %}
+                        {% if app.user %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('logout') }}">Se déconnecter</a>
+                            </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('login') }}">Se connecter</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('security_signup') }}">Créer un compte</a>
+                                </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
         </nav>
-        <div class="container" id="main">
-            <div class="row">
-                {% block body %}{% endblock %}
-
-                {% block sidebar %}
-                    {{ render(controller('App\\Controller\\PostController::sideBar')) }}
-                {% endblock %}
-            </div>
-        </div>
+    {% endblock %}
+    {% block body %}{% endblock %}
 
         {% block javascripts %}
             <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         {% endblock %}
     </body>
 </html>
