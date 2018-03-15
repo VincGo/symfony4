@@ -12,6 +12,7 @@ use App\Events;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\CommentType;
+use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -36,6 +37,7 @@ class CommentController extends AbstractController
     public function commentNew(Request $request, Post $post, EventDispatcherInterface $eventDispatcher) :Response
     {
         $comment = new Comment();
+        $comment->setAuthor($this->getUser());
         $post->addComment($comment);
 
         $form = $this->createForm(CommentType::class, $comment);
@@ -52,8 +54,8 @@ class CommentController extends AbstractController
             return $this->redirectToRoute('blog_post', ['slug' => $post->getSlug()]);
         }
 
-        return $this->render('post/index.html.twig', [
-            'posts' => $post,
+        return $this->render('post/comment_form_error.html.twig', [
+            'post' => $post,
             'form' => $form->createView(),
         ]);
     }
@@ -66,5 +68,30 @@ class CommentController extends AbstractController
             'post' => $post,
             'form'=>$form->createView(),
         ]);
+    }
+
+    /**
+     * @param CommentRepository $commentRepository
+     * @return Response
+     * @Route("/comment", name="comment")
+     */
+    public function show(CommentRepository $commentRepository)
+    {
+        $x = new Comment();
+        $x->getId();
+        $comments = $commentRepository->findAll();
+        $comments_by_id = [];
+
+        foreach ($comments as $comment){
+            $comments_by_id[$comment->$x] = $comment;
+        }
+
+        foreach ($comments as $k => $comment){
+            if ($comment->parent_id != 0){
+                $comments_by_id[$comment->parents_id]->children[] = $comment;
+                unset($comments[$k]);
+            }
+        }
+        return $this->render('comment.html.twig', ['comment' => $comments]);
     }
 }

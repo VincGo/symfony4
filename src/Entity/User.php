@@ -3,20 +3,18 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-
 /**
+ * @ORM\Table(name="app_users")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User implements UserInterface, \Serializable
+class User implements AdvancedUserInterface, \Serializable
 {
     /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
@@ -28,25 +26,32 @@ class User implements UserInterface, \Serializable
     private $fullName;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string", length=25, unique=true)
      */
     private $username;
 
     /**
-     *
-     * @Assert\Email(message="Veuillez entrer une adresse valide")
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string", length=64)
+     */
+    private $password;
+
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=4096)
+     */
+    private $plainPassword;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="is_active", type="boolean")
      */
-    private $password;
+    private $isActive;
 
     /**
      * @var array
@@ -55,50 +60,86 @@ class User implements UserInterface, \Serializable
      */
     private $roles = [];
 
-    public function getId(): int
+
+    public function __construct()
+    {
+        $this->isActive = true;
+        // may not be needed, see section on salt below
+        // $this->salt = md5(uniqid('', true));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->fullName;
+    }
+
+    /**
+     * @param string $fullName
+     */
     public function setFullName(string $fullName): void
     {
         $this->fullName = $fullName;
     }
 
-    public function getFullName()
+
+
+    /**
+     * @return mixed
+     */
+    public function getPlainPassword()
     {
-        return $this->fullName;
+        return $this->plainPassword;
     }
+
+    /**
+     * @param mixed $plainPassword
+     */
+    public function setPlainPassword($plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @param mixed $username
+     */
+    public function setUsername($username): void
+    {
+        $this->username = $username;
+    }
+
 
     public function getUsername()
     {
         return $this->username;
     }
 
-    public function setUsername(string $username): void
-    {
-        $this->username = $username;
-    }
-
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): void
-    {
-        $this->email = $email;
-    }
-
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): void
-    {
-        $this->password = $password;
-    }
 
     /**
      * Returns the roles or permissions granted to the user for security.
@@ -120,47 +161,73 @@ class User implements UserInterface, \Serializable
         $this->roles = $roles;
     }
 
-    /**
-     * Returns the salt that was originally used to encode the password.
-     *
-     * {@inheritdoc}
-     */
-    public function getSalt(): ?string
+    public function getSalt()
     {
-        // See "Do you need to use a Salt?" at https://symfony.com/doc/current/cookbook/security/entity_provider.html
-        // we're using bcrypt in security.yml to encode the password, so
-        // the salt value is built-in and you don't have to generate one
-
+        // you *may* need a real salt depending on your encoder
+        // see section on salt below
         return null;
     }
 
     /**
-     * Removes sensitive data from the user.
-     *
-     * {@inheritdoc}
+     * @param mixed $password
      */
-    public function eraseCredentials(): void
+    public function setPassword($password): void
     {
-        // if you had a plainPassword property, you'd nullify it here
-        // $this->plainPassword = null;
+        $this->password = $password;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function serialize(): string
+    public function getPassword()
     {
-        // add $this->salt too if you don't use Bcrypt or Argon2i
-        return serialize([$this->id, $this->username, $this->password]);
+        return $this->password;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function unserialize($serialized): void
+    public function eraseCredentials()
     {
-        // add $this->salt too if you don't use Bcrypt or Argon2i
-        [$this->id, $this->username, $this->password] = unserialize($serialized, ['allowed_classes' => false]);
     }
 
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    public function isEnabled()
+    {
+        return $this->isActive;
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->isActive
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->isActive
+            // see section on salt below
+            // $this->salt
+            ) = unserialize($serialized);
+    }
 }

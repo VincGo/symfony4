@@ -2,21 +2,41 @@
 
 {% block body %}
         <div class="col-sm-8 blog-main">
+            {% if post.image is not null %}
+            <img src="{{ post.image.url }}" alt="{{ post.image.alt }}">
+            <hr>
+            {% endif %}
             <div class="blog-post">
                 <h2 class="blog-post-title">{{ post.title }}</h2>
                 <p class="blog-post-meta">{{ post.content }}</p>
             </div>
-            {{ render(controller('App\\Controller\\CommentController::commentForm', {'id': post.id})) }}
-
+            {{ include('post/_post_tags.html.twig') }}
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {{ render(controller('App\\Controller\\CommentController::commentForm', {'id': post.id})) }}
+            {% else %}
+                <p>
+                    <a href="{{ path('login') }}">Veuillez vous connecter pour publier un commmentaire</a>
+                </p>
+            {% endif %}
             {% for comment in post.comments %}
-            <div class="row post-comment">
+                <div class="row post-comment">
+                <h4 class="col-sm-3 info-msg">
+                    <em>{{ comment.author.fullName }}</em><br>
+                    <em>{{ comment.publishedAt|date('h:i:s') }}</em><br>
+                    <em>{{ comment.publishedAt|date('d/m/y') }}</em>
+                </h4>
                 <div class="col-sm-9">
-                    {{ comment.content }}
+                    <p>{{ comment.content }}</p>
                 </div>
             </div>
-        {% endfor %}
-    </div>
-
-
-
+                <hr>
+            {% endfor %}
+        </div>
 {% endblock %}
+
+
+{% block javascripts%}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/post_show.js') }}"></script>
+{% endblock %}
+

@@ -31,15 +31,16 @@ class Comment
      * @var string
      *
      * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="comment.blank")
+     * @Assert\NotBlank(message="Veuillez ne pas laisser votre commentaire vide.")
      * @Assert\Length(
      *     min=5,
-     *     minMessage="comment.too_short",
+     *     minMessage="Message trop court. (5 caractères minimum)",
      *     max=10000,
-     *     maxMessage="comment.too_long"
+     *     maxMessage="Message trop long. (10 000 caractères maximum)"
      * )
      */
     private $content;
+
 
     /**
      * @var \DateTime
