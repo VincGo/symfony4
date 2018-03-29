@@ -13,11 +13,36 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
+    public function lastNews()
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->orderBy('p.id', 'DESC')
+            ->setMaxResults('6')
+            ;
+        $query = $qb->getQuery();
+
+        return $query->execute();
+    }
+
+    public function lastArticle()
+    {
+        $qb = $this->createQueryBuilder('post')
+            ->orderBy('post.id', 'DESC')
+            ->leftJoin('post.tags', 'tag')
+            ->where("tag.name = 'article'")
+            ->setMaxResults('4')
+        ;
+        $query = $qb->getQuery();
+
+        return $query->execute();
+    }
+
+
     public function infoSideBar()
     {
         $qb = $this->createQueryBuilder('p')
             ->orderBy('p.id', 'DESC')
-            ->setMaxResults('5')
+            ->setMaxResults('10')
         ;
 
         $query =$qb->getQuery();
@@ -31,6 +56,16 @@ class PostRepository extends ServiceEntityRepository
             ->leftJoin('post.tags', 'tag')
             ->where('tag.name = :value')->setParameter('value', $value)
             ;
+        $query = $qb->getQuery();
+
+        return $query->execute();
+    }
+
+    public function slider($value)
+    {
+        $qb = $this->createQueryBuilder('post')
+            ->where('post.id = :value')->setParameter('value', $value)
+        ;
         $query = $qb->getQuery();
 
         return $query->execute();

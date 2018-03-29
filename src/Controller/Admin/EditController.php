@@ -35,7 +35,7 @@ class EditController extends AbstractController
 
             $this->addFlash('success', "L'article a bien été modifié");
 
-            return $this->redirectToRoute('admin_edit', ['id' => $post->getId()]);
+            return $this->redirectToRoute('admin_index');
         }
 
         return $this->render('admin/post/edit.html.twig', [

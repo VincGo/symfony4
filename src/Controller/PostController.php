@@ -19,10 +19,23 @@ class PostController extends AbstractController
      */
     public function index(PostRepository $postRepository): Response
     {
-        $posts = $postRepository->findBy(array(), array('id'=>'desc'));
+        $slider = array(38, 39, 40, 41);
+        $value = 38;
+
+        $posts = $postRepository->lastNews();
+        $articles = $postRepository->lastArticle();
+        $slide1 = $postRepository->slider($value);
+        $slide2 = $postRepository->slider($value);
+        $slide3 = $postRepository->slider($value);
+        $slide4 = $postRepository->slider($value);
 
         return $this->render('post/index.html.twig', [
-            'posts' => $posts
+            'posts' => $posts,
+            'articles' => $articles,
+            'slide1' => $slide1,
+            'slide2' => $slide2,
+            'slide3' => $slide3,
+            'slide4' => $slide4,
         ]);
     }
 
