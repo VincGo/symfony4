@@ -1,0 +1,30 @@
+<section class="box-article">
+    <h3 class="article-title article-title-3">Article</h3>
+    {# LEFT #}
+    {% for article in articles %}
+        <div class="article-main align-left">
+            <a href="#" class="article-photo">
+                <img width="180" height="180" src="{{ article.image.url }}" alt="{{ article.image.alt }}" class="attachment-vignettes-carrees size-vignettes-carrees">
+            </a>
+            <a href="">
+                <h4>{{ article.title }}</h4>
+            </a>
+            <div class="article-date"></div>
+            <div class="article-texte">
+                {{ article.content|slice(0, 250) }} ...
+                <a href="" class="more">Lire la suite</a>
+            </div>
+        </div>
+    {% endfor %}
+    {# RIGHT #}
+    {% for fourArticle in fourArticles %}
+        <ul class="article-list align-right">
+            <li>
+                <a href="">
+                    <h4>{{ fourArticle.title }}</h4>
+                </a>
+            </li>
+        </ul>
+    {% endfor %}
+    <a href="" class="other">Voir d'autres articles</a>
+</section>

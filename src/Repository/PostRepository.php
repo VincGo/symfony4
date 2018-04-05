@@ -15,13 +15,13 @@ class PostRepository extends ServiceEntityRepository
 
     public function lastNews()
     {
-        $qb = $this->createQueryBuilder('p')
+        return $this->createQueryBuilder('p')
             ->orderBy('p.id', 'DESC')
             ->setMaxResults('6')
+            ->getQuery()
+            ->getResult()
             ;
-        $query = $qb->getQuery();
 
-        return $query->execute();
     }
 
     public function lastArticle()
@@ -37,38 +37,60 @@ class PostRepository extends ServiceEntityRepository
         return $query->execute();
     }
 
+    public function lastSection($value)
+    {
+        return  $this->createQueryBuilder('post')
+            ->orderBy('post.id', 'DESC')
+            ->leftJoin('post.tags', 'tag')
+            ->where('tag.name = :value')->setParameter('value', $value)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function fourSection($value)
+    {
+        return $this->createQueryBuilder('post')
+            ->orderBy('post.id', 'DESC')
+            ->leftJoin('post.tags', 'tag')
+            ->where('tag.name = :value')->setParameter('value', $value)
+            ->setFirstResult(1)
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult()
+        ;
+
+    }
 
     public function infoSideBar()
     {
-        $qb = $this->createQueryBuilder('p')
+        return $this->createQueryBuilder('p')
             ->orderBy('p.id', 'DESC')
             ->setMaxResults('10')
+            ->getQuery()
+            ->getResult()
         ;
-
-        $query =$qb->getQuery();
-
-        return $query->execute();
     }
 
     public function finByTag($value)
     {
-        $qb = $this->createQueryBuilder('post')
+        return $this->createQueryBuilder('post')
+            ->orderBy('post.id', 'DESC')
             ->leftJoin('post.tags', 'tag')
             ->where('tag.name = :value')->setParameter('value', $value)
+            ->getQuery()
+            ->getResult()
             ;
-        $query = $qb->getQuery();
-
-        return $query->execute();
     }
 
     public function slider($value)
     {
-        $qb = $this->createQueryBuilder('post')
+        return $this->createQueryBuilder('post')
             ->where('post.id = :value')->setParameter('value', $value)
+            ->getQuery()
+            ->getResult()
         ;
-        $query = $qb->getQuery();
-
-        return $query->execute();
     }
     /*
     public function findBySomething($value)

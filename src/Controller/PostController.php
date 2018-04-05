@@ -23,7 +23,6 @@ class PostController extends AbstractController
         $value = 38;
 
         $posts = $postRepository->lastNews();
-        $articles = $postRepository->lastArticle();
         $slide1 = $postRepository->slider($value);
         $slide2 = $postRepository->slider($value);
         $slide3 = $postRepository->slider($value);
@@ -31,7 +30,6 @@ class PostController extends AbstractController
 
         return $this->render('post/index.html.twig', [
             'posts' => $posts,
-            'articles' => $articles,
             'slide1' => $slide1,
             'slide2' => $slide2,
             'slide3' => $slide3,
@@ -71,5 +69,27 @@ class PostController extends AbstractController
         $post = $postRepository->finByTag($value);
 
         return $this->render('post/article.html.twig', ['posts' => $post,]);
+    }
+
+    public function lastResume(PostRepository $postRepository): Response
+    {
+        $resumes = $postRepository->lastSection('résumé');
+        $fourResumes = $postRepository->fourSection('résumé');
+
+        return $this->render('post/_section_resume.html.twig', [
+            'resumes'=> $resumes,
+            'fourResumes'=> $fourResumes
+        ]);
+    }
+
+    public function lastArticle(PostRepository $postRepository): Response
+    {
+        $articles = $postRepository->lastSection('article');
+        $fourArticles = $postRepository->fourSection('article');
+
+        return $this->render('post/_section_article.html.twig', [
+            'articles'=> $articles,
+            'fourArticles'=> $fourArticles
+        ]);
     }
 }

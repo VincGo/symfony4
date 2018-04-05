@@ -32,7 +32,7 @@ a{
     min-height: 100%;
     height: 100%;
     display: block;
-    margin: 0 auto 0 auto;
+    margin: 75px auto 0 auto;
     position: relative;
 }
 
@@ -43,7 +43,6 @@ a{
 
 .row{
     margin-left: 0;
-    margin-top: 75px;
 }
 
 .featured-article {
@@ -118,7 +117,29 @@ a{
     line-height: 20px;
 }
 
+/* SECTION - TEAM */
+.article-title-2{
+    color: #1b77ad;
+    border-top: 3px solid #1b77ad;
+}
+
+.team_logo{
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.team_logo img{
+    width: 70px;
+}
+
 /* SECTION - ARTICLE */
+.article-title-3{
+    color: #eab310;
+    border-top: 3px solid #eab310;
+}
+
+
+/* SECTION */
 .box-article{
     display: block;
     float: left;
@@ -140,7 +161,6 @@ a{
     text-align: center;
     text-transform: uppercase;
     font-size: 18px;
-    color: #4CAF3E;
     padding: 15px 16px 10px 10px;
     margin: 5px 0 15px 0;
     line-height: 18px;
@@ -183,8 +203,14 @@ a{
 }
 
 .other {
-    margin-top: 45px;
-    font-style: italic;
+    padding: 3px 0 2px 0;
+    text-align: right;
+    color: #999;
+    display: block;
+    float: right;
+    border-bottom: 1px dotted #ccc;
+    clear: both;
+    margin-top: 10px;
 }
 
 /* RIGHT */
@@ -212,4 +238,114 @@ a{
     line-height: 16px;
     display: inline;
 }
+
+/* ASIDE*/
+aside li{
+    border-bottom: 1px black solid;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.card-body{
+    background-color: #ececec;
+}
+
+.card-header{
+    background-color: red;
+}
+
+.post-tags a{
+    display: block;
+    float: left;
+    color: black;
+    background-color: red;
+    text-transform: uppercase;
+    padding: 2px 12px 2px 12px;
+    font-size: 13px;
+    margin: 5px 0 10px 0;
+    border-radius: 2px;
+    margin-right: 6px;
+}
+
+.show-title{
+    padding-top: 35px;
+}
+
+.article-meta{
+    display: block;
+    border-bottom: 1px dotted #DDD;
+    padding: 0 0 3px 0;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.show-title{
+    clear: both;
+    padding-bottom: 30px;
+    padding-top: 5px;
+    overflow: hidden;
+    text-align: justify;
+}
+
+/* SHOW - CONTENT */
+
+.blog-post{
+    width: 70%;
+    border-top: 2px solid #E1E1E1;
+    padding-top: 20px;
+    margin-top: 20px;
+    float: left;
+}
+
+.post-comment{
+    width: 70%;
+    float: left;
+    border-bottom: 1px black solid;
+    padding-bottom: 10px;
+    margin-top: 10px;
+}
+
+/* LIST - BILLET */
+.billet-list{
+    display: block;
+    float: left;
+    clear: left;
+    width: 70%;
+    margin-bottom: 15px;
+    border-bottom: 1px #E1E1E1 solid;
+    padding-bottom: 15px;
+}
+
+.billet-list h4{
+display: block;
+font-size: 18px;
+line-height: 20px;
+padding-bottom: 4px;
+}
+
+.billet-list a{
+display: block;
+text-decoration: none;
+}
+
+.billet-photo{
+    float: left;
+    margin-right: 10px;
+}
+
+.billet-texte{
+    font-size: 13px;
+    line-height: 16px;
+    display: block
+}
+
+#billet-sidebar{
+    margin-top: 10px;
+}
+
+
+
 

@@ -1,0 +1,30 @@
+<section class="box-article">
+    <h3 class="article-title article-title-1">résumé</h3>
+    {# LEFT #}
+    {% for resume in resumes %}
+        <div class="article-main align-left">
+            <a href="{{ path('blog_post', {'slug': resume.slug}) }}" class="article-photo">
+                <img width="180" height="180" src="{{ resume.image.url }}" alt="{{ resume.image.alt }}" class="attachment-vignettes-carrees size-vignettes-carrees">
+            </a>
+            <a href="{{ path('blog_post', {'slug': resume.slug}) }}">
+                <h4>{{ resume.title }}</h4>
+            </a>
+            <div class="article-date"></div>
+            <div class="article-texte">
+                    {{ resume.content|slice(0, 250) }} ...
+                <a href="{{ path('blog_post', {'slug': resume.slug}) }}" class="more">Lire la suite</a>
+            </div>
+        </div>
+    {% endfor %}
+    {# RIGHT #}
+    {% for fourResume in fourResumes %}
+        <ul class="article-list align-right">
+            <li>
+                <a href="{{ path('blog_post', {'slug': fourResume.slug}) }}">
+                    <h4>{{ fourResume.title }}</h4>
+                </a>
+            </li>
+        </ul>
+    {% endfor %}
+    <a href="{{ path('article_post', {'tag': 'résumé'}) }}" class="other">Voir d'autres articles</a>
+</section>
