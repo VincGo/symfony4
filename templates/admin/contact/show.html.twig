@@ -1,0 +1,23 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block body %}
+
+    {% block button %}
+        <div class="col-sm 3">
+            <div class="section">
+                <form action="{{ url('admin_delete_contact', {id: contact.id}) }}" method="post">
+                    <button type="submit">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    {% endblock %}
+
+    <div class="col-sm-8 blog-main">
+        <div class="blog-post">
+            <p class="blog-post-title">Nom : {{ contact.name }} </p>
+            <p class="blog-post-meta">Email : {{ contact.email}}</p>
+            <p class="blog-post-meta">Sujet : {{ contact.subject }}</p>
+            <p class="blog-post-meta">Message : {{ contact.message }}</p>
+        </div>
+    </div>
+{% endblock %}

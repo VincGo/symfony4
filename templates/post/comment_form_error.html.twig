@@ -1,37 +1,6 @@
-
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="col-sm-8 blog-main">
-        <div class="blog-post">
-            <h2 class="blog-post-title">{{ post.title }}</h2>
-            <p class="blog-post-meta">{{ post.content }}</p>
-        </div>
-
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            {{ include('post/_comment_form.html.twig') }}
-        {% else %}
-            <p>
-                <a href="{{ path('login') }}">Veuillez vous connecter pour publier un commmentaire</a>
-            </p>
-        {% endif %}
-        {% for comment in post.comments %}
-            <div class="row post-comment">
-                <h4 class="col-sm-3">
-                    <span>{{ comment.author.fullName }}</span><br>
-                    <span>{{ comment.publishedAt|date('h:i:s') }}</span>
-                    <span>{{ comment.publishedAt|date('d/m/y') }}</span>
-                </h4>
-                <div class="col-sm-9">
-                    {{ comment.content }}
-                </div>
-            </div>
-            <hr>
-        {% endfor %}
-    </div>
-
-
 
 {% endblock %}
-
 

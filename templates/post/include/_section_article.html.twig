@@ -3,10 +3,10 @@
     {# LEFT #}
     {% for article in articles %}
         <div class="article-main align-left">
-            <a href="#" class="article-photo">
+            <a href="{{ path('blog_post', {'slug': article.slug}) }}" class="article-photo">
                 <img width="180" height="180" src="{{ article.image.url }}" alt="{{ article.image.alt }}" class="attachment-vignettes-carrees size-vignettes-carrees">
             </a>
-            <a href="">
+            <a href="{{ path('blog_post', {'slug': article.slug}) }}">
                 <h4>{{ article.title }}</h4>
             </a>
             <div class="article-date"></div>
@@ -20,11 +20,11 @@
     {% for fourArticle in fourArticles %}
         <ul class="article-list align-right">
             <li>
-                <a href="">
+                <a href="{{ path('blog_post', {'slug': fourArticle.slug}) }}">
                     <h4>{{ fourArticle.title }}</h4>
                 </a>
             </li>
         </ul>
     {% endfor %}
-    <a href="" class="other">Voir d'autres articles</a>
+    <a href="{{ path('article_post', {'tag': 'article'}) }}" class="other">Voir d'autres articles</a>
 </section>

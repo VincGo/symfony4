@@ -1,0 +1,7 @@
+{% for chat in refreshMsgs %}
+    <p data-id="{{ chat.id }}" data-team="{{ chat.team }}"><span>{{ chat.publishedAt|date('d/m/y à h:i:s') }}</span> <span>{{ chat.pseudo.fullName }}</span> : {{ chat.content }}</p>
+{% endfor %}
+
+
+
+

@@ -10,6 +10,7 @@ namespace App\Controller\Admin;
 
 
 use App\Entity\Comment;
+use App\Entity\Contact;
 use App\Entity\Post;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,5 +50,21 @@ class DeleteController extends AbstractController
         $this->addFlash('success', "Le commentaire a été supprimé.");
 
         return $this->redirectToRoute('admin_index_comment');
+    }
+
+    /**
+     * @Route("contact/{id}/delete", name="admin_delete_contact")
+     * @Method("POST")
+     */
+    public function deleteContact(Request $request, Contact $contact): Response
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($contact);
+        $em->flush();
+
+        $this->addFlash('success', "Le commentaire a été supprimé.");
+
+        return $this->redirectToRoute('admin_index_contact');
     }
 }

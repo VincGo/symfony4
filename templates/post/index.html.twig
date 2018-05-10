@@ -1,34 +1,34 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {{ parent() }}
 	{# THUMBNAIL #}
 	<div class="container-thumbnail">
 		<div class="row">
 				{# THUMBNAIL - MAIN #}
             <div class="featured-article">
-                <a href="#">
-                    <img src="{{ asset('img/nba1.jpg') }}" alt="" class="thumb">
+                <a href="{{ path('blog_post', {'slug': slider.slug}) }}">
+                    <img src="{{ slider.image.url }}" alt="{{ slider.image.alt }}" class="thumb">
                 </a>
                 <div class="block-title">
-                    <h2>Lorem ipsum dolor asit amet</h2>
-                    <p class="by-author"><small>By Jhon Doe</small></p>
+                    <h2>{{ slider.title }}</h2>
                 </div>
             </div>
 
 			{# THUMBNAIL - SECONDARY #}
             <ul class="media-list main-list">
-                {% for i in 0..3 %}
+                {% for fourSlider in fourSliders %}
                     <li>
-                        <a class="pull-left" href="#">
-                            <img class="media-object" src="http://placehold.it/150x90" alt="...">
+                        <a class="pull-left" href="{{ path('blog_post', {'slug': fourSlider.slug}) }}">
+                            <img class="media-object" src="{{ fourSlider.image.url }}" alt="{{ fourSlider.image.alt }}">
                         </a>
                         <div class="media-title">
-                            <a href="#">
-                                <h4>La course au Top 8 à l’Ouest : ils sont encore huit pour six places</h4>
+                            <a href="{{ path('blog_post', {'slug': fourSlider.slug}) }}">
+                                <h4>{{ fourSlider.title }}</h4>
                             </a>
                         </div>
                         <div class="media-text">
-                            Vous avez l’impression que le classement de la Conférence Ouest change en permanence ? C’est tout à fait normal, n’allez pas consulter...
+                            <p>{{ fourSlider.content|slice(0, 250)|raw }}</p>
                         </div>
                     </li>
                 {% endfor %}
@@ -37,11 +37,12 @@
 	</div>
 
     {# SECTION - TEAM #}
-    {{ include('post/_section_team.html.twig') }}
+    {{ include('post/include/_section_team.html.twig') }}
 
 	{# SECTION - RESUME #}
     {{ render(controller('App\\Controller\\PostController::lastResume')) }}
 
     {# SECTION - ARTICLE #}
     {{ render(controller('App\\Controller\\PostController::lastArticle')) }}
+
 {% endblock %}

@@ -11,15 +11,26 @@ namespace App\Controller\Admin;
 
 use App\Entity\Post;
 use App\Form\CreateType;
-use App\Utils\Slugger;
+use App\Handlers\Interfaces\CreateHandlerInterfaces;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateController extends AbstractController
 
 {
+    private $formFactory;
+    private $createHandler;
+
+    public function __construct(
+        FormFactoryInterface $formFactory,
+        CreateHandlerInterfaces $createHandler
+    ){
+        $this->formFactory = $formFactory;
+        $this->createHandler = $createHandler;
+    }
 
     /**
      * @param Request $request
@@ -30,26 +41,10 @@ class CreateController extends AbstractController
     {
         $post = new Post();
 
-        // See https://symfony.com/doc/current/book/forms.html#submitting-forms-with-multiple-buttons
-        $form = $this->createForm(CreateType::class, $post);
+        $form = $this->formFactory->create(CreateType::class, $post)
+                                  ->handleRequest($request);
 
-        $form->handleRequest($request);
-
-        // the isSubmitted() method is completely optional because the other
-        // isValid() method already checks whether the form is submitted.
-        // However, we explicitly add it to improve code readability.
-        // See https://symfony.com/doc/current/best_practices/forms.html#handling-form-submits
-        if ($form->isSubmitted() && $form->isValid()) {
-            $post->setSlug(Slugger::slugify($post->getTitle()));
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($post);
-            $em->flush();
-
-            // Flash messages are used to notify the user about the result of the
-            // actions. They are deleted automatically from the session as soon
-            // as they are accessed.
-            // See https://symfony.com/doc/current/book/controller.html#flash-messages
+        if ($this->createHandler->handle($form)) {
             $this->addFlash('success', "L'article a bien été enregistré");
 
             return $this->redirectToRoute('admin_index');

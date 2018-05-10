@@ -1,19 +1,24 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block body %}
-<div class="col-sm-8 blog-main">
-    <div class="blog-post">
-        <h2 class="blog-post-title">{{ posts.title }}</h2>
-        <p class="blog-post-meta">{{ posts.content }}</p>
+
+    {% block button %}
+        <div class="col-sm 3">
+            <div class="section">
+                <form action="{{ url('admin_delete', {id: posts.id}) }}" method="post">
+                    <button type="submit">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    {% endblock %}
+
+    <div class="col-sm-8 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ posts.title }}</h2>
+            <p class="blog-post-meta">{{ posts.content }}</p>
+        </div>
     </div>
-</div>
+
 {% endblock %}
 
-{% block sidebar %}
-    <div class="section">
-        <form action="{{ url('admin_delete', {id: posts.id}) }}" method="post">
-            <button type="submit">Supprimer</button>
-        </form>
-    </div>
-    {{ parent() }}
-{% endblock %}
+

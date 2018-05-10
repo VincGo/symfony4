@@ -1,18 +1,21 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block body %}
+
+    {% block button %}
+        <div class="col-sm 3">
+            <div class="section">
+                <form action="{{ url('admin_delete_comment', {id: comment.id}) }}" method="post">
+                    <button type="submit">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    {% endblock %}
+
     <div class="col-sm-8 blog-main">
         <div class="blog-post">
             <p class="blog-post-title">{{ comment.author.fullName }} le {{ comment.publishedAt|date("d/m/y à h:i:s") }}</p>
             <p class="blog-post-meta">{{ comment.content }}</p>
         </div>
-    </div>
-{% endblock %}
-
-{% block sidebar %}
-    <div class="section">
-        <form action="{{ path('admin_delete_comment', {id: comment.id}) }}" method="post">
-            <button type="submit">Supprimer</button>
-        </form>
     </div>
 {% endblock %}

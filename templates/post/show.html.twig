@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {{ parent() }}
     <div class="container-thumbnail">
         <div class="row">
             {# THUMBNAIL - MAIN #}
@@ -14,7 +15,7 @@
                         {% if not post.tags.empty %}
                             <div class="post-tags">
                                 {% for tag in post.tags %}
-                                    <a href="{{ path('article_post', {tag: tag.name}) }}">{{ tag.name }}</a>
+                                    <a href="{{ path('article_post', {'tag': tag.name}) }}">{{ tag.name }}</a>
                                 {% endfor %}
                             </div>
                         {% endif %}
@@ -24,18 +25,18 @@
 
             {# THUMBNAIL - SECONDARY #}
             <ul class="media-list main-list">
-                {% for i in 0..3 %}
+                {% for relatedArticle in relatedArticles %}
                 <li>
-                    <a class="pull-left" href="#">
-                        <img class="media-object" src="http://placehold.it/150x90" alt="...">
+                    <a class="pull-left" href="{{ path('blog_post', {'slug': relatedArticle.slug}) }}">
+                        <img class="media-object" src="{{ relatedArticle.image.url }}" alt="{{ relatedArticle.image.alt }}">
                     </a>
                     <div class="media-title">
-                        <a href="#">
-                            <h4>La course au Top 8 à l’Ouest : ils sont encore huit pour six places</h4>
+                        <a href="{{ path('blog_post', {'slug': relatedArticle.slug}) }}">
+                            <h4>{{ relatedArticle.title }}</h4>
                         </a>
                     </div>
                     <div class="media-text">
-                        Vous avez l’impression que le classement de la Conférence Ouest change en permanence ? C’est tout à fait normal, n’allez pas consulter...
+                        <p>{{ relatedArticle.content|slice(0, 250)|raw }}</p>
                     </div>
                 </li>
                 {% endfor %}
@@ -44,7 +45,7 @@
     </div>
     <div class="blog-post">
         <p class="blog-post-meta">
-            {{ post.content }}
+            {{ post.content|raw}}
         </p>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             {{ render(controller('App\\Controller\\CommentController::commentForm', {'id': post.id})) }}
