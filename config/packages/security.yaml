@@ -27,6 +27,9 @@ security:
             logout:
                 path: logout
                 target: list_post
+
+    access_control:
+      - { path: '^/admin', roles: ROLE_ADMIN }
             # http_basic: ~
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
 

@@ -1,7 +1,10 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block body %}
-    {{ include('admin/post/_edit_form.html.twig') }}
+    <div class="post_admin">
+        <h1>Editer un article</h1>
+        {{ include('admin/post/_edit_form.html.twig') }}
+    </div>
 {% endblock %}
 
 

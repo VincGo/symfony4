@@ -20,24 +20,40 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @var string
-     *
      * @ORM\Column(type="string")
      */
     private $fullName;
 
     /**
      * @ORM\Column(type="string", length=25, unique=true)
+     * @Assert\Length(
+     *     min="5",
+     *     minMessage="Votre pseudo est trop court 5 caractères minimum.",
+     *     max="20",
+     *     maxMessage="Votre pseudo est trop long 20 caractères maximum."
+     * )
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Assert\Length(
+     *     min="5",
+     *     minMessage="Votre pseudo est trop court 5 caractères minimum.",
+     *     max="20",
+     *     maxMessage="Votre pseudo est trop long 20 caractères maximum."
+     * )
      */
     private $password;
 
     /**
      * @Assert\NotBlank()
-     * @Assert\Length(max=4096)
+     * @Assert\Length(
+     *     min="5",
+     *     minMessage="Votre pseudo est trop court 5 caractères minimum.",
+     *     max="20",
+     *     maxMessage="Votre pseudo est trop long 20 caractères maximum."
+     * )
      */
     private $plainPassword;
 
@@ -56,7 +72,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var array
      *
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="array")
      */
     private $roles = [];
 
@@ -140,22 +156,33 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->username;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getisActive()
+    {
+        return $this->isActive;
+    }
 
     /**
-     * Returns the roles or permissions granted to the user for security.
+     * @param mixed $isActive
+     */
+    public function setIsActive($isActive): void
+    {
+        $this->isActive = $isActive;
+    }
+
+    /**
+     * @return array
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-
-        // guarantees that a user always has at least one role for security
-        if (empty($roles)) {
-            $roles[] = 'ROLE_USER';
-        }
-
-        return array_unique($roles);
+        return $this->roles;
     }
 
+    /**
+     * @param array $roles
+     */
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;

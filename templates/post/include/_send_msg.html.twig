@@ -1,0 +1,12 @@
+<div class="card my-4">
+    <div class="card-body">
+        <div class="form-group" id="chat">
+            {{ form_start(form, {method: 'POST', action: path('new_msg', {tag: tag.name})}) }}
+            {{ form_row(form.content) }}
+            <button class="btn btn-outline-danger" value="submit" id="send">Envoyer</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+
+

@@ -1,13 +1,14 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block body %}
-    <div class="col-4">
+    <div class="post_admin">
         <h1>Créer un nouvel article</h1>
 
         {{ form_start(form) }}
             {{ form_row(form.title, {'label': 'Titre'}) }}
             {{ form_row(form.content, {'label': 'Contenu'}) }}
             {{ form_row(form.tags, {'label': 'Tag'}) }}
+            {{ form_row(form.slider, {'label': 'Slider'}) }}
             {{ form_row(form.image, {'label': false}) }}
             <input type="submit" value="envoyer" formnovalidate="formnovalidate">
         {{ form_end(form) }}

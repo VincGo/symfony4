@@ -12,6 +12,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Post
 {
+    const NUMBER_OF_MAIN_POSTS = 1;
+    const NUMBER_OF_RELATED_POSTS = 4;
+    const NUMBER_OF_SECTION_POSTS = 5;
+    const NUMBER_OF_SIDEBAR_POSTS = 10;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -71,6 +76,13 @@ class Post
      * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist"})
      */
     private $image;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    private $slider;
 
     public function __construct()
     {
@@ -220,4 +232,23 @@ class Post
     {
         return $this->image;
     }
+
+    /**
+     * @return string
+     */
+    public function getSlider()
+    {
+        return $this->slider;
+    }
+
+    /**
+     * @param string $slider
+     */
+    public function setSlider(string $slider)
+    {
+        $this->slider = $slider;
+    }
+
+
+
 }

@@ -8,43 +8,42 @@
 
 namespace App\Controller;
 
-
 use App\Form\SignupType;
 use App\Entity\User;
+use App\Handlers\Interfaces\RegistrationHandlerInterfaces;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RegistrationController extends Controller
 {
+    private $formFactory;
+    private $registerHandler;
+
+    public function __construct(
+        FormFactoryInterface $formFactory,
+        RegistrationHandlerInterfaces $registerHandler
+    ){
+        $this->formFactory = $formFactory;
+        $this->registerHandler = $registerHandler;
+    }
+
     /**
      * @Route("/signup", name="security_signup")
      */
-    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function registerAction(Request $request)
     {
-        // 1) build the form
         $user = new User();
-        $form = $this->createForm(SignupType::class, $user);
 
-        // 2) handle the submit (will only happen on POST)
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // 3) Encode the password (you could also do this via Doctrine listener)
-            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
-            $user->setPassword($password);
-            $user->setRoles(['ROLE_USER']);
-            // 4) save the User!
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-
+        $form = $this->formFactory->create(SignupType::class, $user)
+                                  ->handleRequest($request);
+        if ($this->registerHandler->handle($form)) {
+            $this->addFlash('success', 'Merci pour votre inscription.');
             return $this->redirectToRoute('login');
         }
 
-        return $this->render(
-            'security/signup.html.twig',
+        return $this->render('security/signup.html.twig',
             array('form' => $form->createView())
         );
     }

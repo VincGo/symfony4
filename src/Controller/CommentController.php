@@ -8,17 +8,16 @@
 
 namespace App\Controller;
 
-use App\Events;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\CommentType;
-use App\Repository\CommentRepository;
-use App\Repository\PostRepository;
+use App\Handlers\Interfaces\CommentHandlerInterfaces;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,31 +25,37 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CommentController extends AbstractController
 {
+    private $formFactory;
+    private $commentHandlerInterfaces;
+
+    public function __construct(
+        FormFactoryInterface $formFactory,
+        CommentHandlerInterfaces $commentHandlerInterfaces
+    ){
+        $this->formFactory = $formFactory;
+        $this->commentHandlerInterfaces = $commentHandlerInterfaces;
+    }
+
+
     /**
      * @param Request $request
      * @param Post $post
-     * @param EventDispatcherInterface $eventDispatcher
      * @Route("/comment/{postSlug}/new", name="comment_new")
      * @Method("POST")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @ParamConverter("post", options={"mapping": {"postSlug": "slug"}})
      */
-    public function commentNew(Request $request, Post $post, EventDispatcherInterface $eventDispatcher) :Response
+    public function commentNew(Request $request, Post $post) :Response
     {
         $comment = new Comment();
-        $comment->setAuthor($this->getUser());
-        $post->addComment($comment);
 
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
+        $form = $this->formFactory->create(CommentType::class, $comment)
+                                  ->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($comment);
-            $em->flush();
+        if($this->commentHandlerInterfaces->handle($form, $post)) {
 
-            $event = new GenericEvent($comment);
+            $this->addFlash('success', "Votre commentaire a bien été envoyé");
 
-            $eventDispatcher->dispatch(Events::COMMENT_CREATED, $event);
             return $this->redirectToRoute('blog_post', ['slug' => $post->getSlug()]);
         }
 
@@ -64,34 +69,9 @@ class CommentController extends AbstractController
     {
         $form = $this->createForm(CommentType::class);
 
-        return $this->render('post/_comment_form.html.twig', [
+        return $this->render('post/include/_comment_form.html.twig', [
             'post' => $post,
             'form'=>$form->createView(),
         ]);
-    }
-
-    /**
-     * @param CommentRepository $commentRepository
-     * @return Response
-     * @Route("/comment", name="comment")
-     */
-    public function show(CommentRepository $commentRepository)
-    {
-        $x = new Comment();
-        $x->getId();
-        $comments = $commentRepository->findAll();
-        $comments_by_id = [];
-
-        foreach ($comments as $comment){
-            $comments_by_id[$comment->$x] = $comment;
-        }
-
-        foreach ($comments as $k => $comment){
-            if ($comment->parent_id != 0){
-                $comments_by_id[$comment->parents_id]->children[] = $comment;
-                unset($comments[$k]);
-            }
-        }
-        return $this->render('comment.html.twig', ['comment' => $comments]);
     }
 }

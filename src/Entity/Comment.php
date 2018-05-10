@@ -31,13 +31,14 @@ class Comment
      * @var string
      *
      * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="Veuillez ne pas laisser votre commentaire vide.")
+     * @Assert\NotBlank(message="Veuillez ne pas laisser votre message vide.")
      * @Assert\Length(
      *     min=5,
      *     minMessage="Message trop court. (5 caractères minimum)",
      *     max=10000,
      *     maxMessage="Message trop long. (10 000 caractères maximum)"
      * )
+     *
      */
     private $content;
 

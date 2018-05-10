@@ -20,18 +20,43 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SignupType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface$builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fullName', TextType::class, array('label' => 'Nom complet'))
-            ->add('username', TextType::class, array('label' => 'Pseudo'))
-            ->add('email', EmailType::class, array('label' => 'E-mail'))
-            ->add('plainPassword', RepeatedType::class, array(
+            ->add(
+                'fullName',
+                TextType::class,
+                [
+                    'label' => 'Nom complet'
+                ]
+            )
+            ->add(
+                'username',
+                TextType::class,
+                [
+                    'label' => 'Pseudo'
+                ]
+            )
+            ->add(
+                'email',
+                EmailType::class,
+                [
+                    'label' => 'E-mail'
+                ]
+            )
+            ->add(
+                'plainPassword',
+                RepeatedType::class,
+                [
                 'type' => PasswordType::class,
-                'first_options' => array('label' => 'Créez un mot de passe'),
-                'second_options' => array('label' => 'Confirmez votre mot de passe')
-            ))
-        ;
+                'first_options' => [
+                    'label' => 'Créez un mot de passe'
+                ],
+                'second_options' => [
+                    'label' => 'Confirmez votre mot de passe'
+                    ],
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
