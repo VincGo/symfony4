@@ -11,7 +11,7 @@
             </a>
             <div class="article-date"></div>
             <div class="article-texte">
-                {{ article.content|slice(0, 250) }} ...
+                {{ article.content|slice(0, 250)|raw }} ...
                 <a href="" class="more">Lire la suite</a>
             </div>
         </div>
