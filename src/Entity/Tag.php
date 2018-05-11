@@ -13,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
+ *
+ * @category PHP
+ * @package  App\Entity
+ * @author   Vincent <tazuku.66@gmail.com>
+ * @link     https://github.com/VincGo/symfony4
  */
  class Tag implements \JsonSerializable
 {

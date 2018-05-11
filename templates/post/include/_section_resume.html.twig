@@ -11,7 +11,7 @@
             </a>
             <div class="article-date"></div>
             <div class="article-texte">
-                    {{ resume.content|slice(0, 250) }} ...
+                    {{ resume.content|slice(0, 250)|raw }} ...
                 <a href="{{ path('blog_post', {'slug': resume.slug}) }}" class="more">Lire la suite</a>
             </div>
         </div>
