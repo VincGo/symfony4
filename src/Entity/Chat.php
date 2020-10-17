@@ -6,14 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Gestion du chat
- *
  * @ORM\Entity(repositoryClass="App\Repository\ChatRepository")
- *
- * @category PHP
- * @package  App\Entity
- * @author   Vincent <tazuku.66@gmail.com>
- * @link     https://github.com/VincGo/symfony4
  */
 class Chat
 {
@@ -59,9 +52,7 @@ class Chat
      */
     private $publishedAt;
 
-    /**
-     * Chat constructor.
-     */
+
     public function __construct()
     {
         $this->publishedAt = new \DateTime();

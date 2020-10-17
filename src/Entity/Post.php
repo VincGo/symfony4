@@ -9,11 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
- *
- * @category PHP
- * @package  App\Entity
- * @author   Vincent <tazuku.66@gmail.com>
- * @link     https://github.com/VincGo/symfony4
  */
 class Post
 {

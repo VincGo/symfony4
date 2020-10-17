@@ -4,10 +4,10 @@
     <div class="form">
         <h1>Contact</h1>
         {{ form_start(formCont) }}
-        {{ form_row(formCont.name) }}
-        {{ form_row(formCont.email) }}
-        {{ form_row(formCont.subject) }}
-        {{ form_row(formCont.message) }}
+        {{ form_row(formCont.name, {'label': 'Nom'}) }}
+        {{ form_row(formCont.email, {'label': 'E-mail'}) }}
+        {{ form_row(formCont.subject, {'label': 'Sujet'}) }}
+        {{ form_row(formCont.message, {'label': 'Message'}) }}
         <button class="btn btn-lg btn-danger btn-block" type="submit">Envoyer</button>
         {{ form_end(formCont) }}
     </div>

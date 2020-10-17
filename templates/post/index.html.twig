@@ -19,9 +19,11 @@
             <ul class="media-list main-list">
                 {% for fourSlider in fourSliders %}
                     <li>
-                        <a class="pull-left" href="{{ path('blog_post', {'slug': fourSlider.slug}) }}">
-                            <img class="media-object" src="{{ fourSlider.image.url }}" alt="{{ fourSlider.image.alt }}">
-                        </a>
+                        <div class="img-media-list">
+                            <a class="pull-left" href="{{ path('blog_post', {'slug': fourSlider.slug}) }}">
+                                <img class="media-object" src="{{ fourSlider.image.url }}" alt="{{ fourSlider.image.alt }}">
+                            </a>
+                        </div>
                         <div class="media-title">
                             <a href="{{ path('blog_post', {'slug': fourSlider.slug}) }}">
                                 <h4>{{ fourSlider.title }}</h4>

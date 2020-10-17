@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="form-group" id="chat">
             {{ form_start(form, {method: 'POST', action: path('new_msg', {tag: tag.name})}) }}
-            {{ form_row(form.content) }}
+            {{ form_row(form.content, {'label': false}) }}
             <button class="btn btn-outline-danger" value="submit" id="send">Envoyer</button>
             {{ form_end(form) }}
         </div>

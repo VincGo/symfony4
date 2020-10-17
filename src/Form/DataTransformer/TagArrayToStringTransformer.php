@@ -16,9 +16,8 @@ class TagArrayToStringTransformer implements DataTransformerInterface
 {
     private $manager;
 
-    public function __construct(
-        ObjectManager $manager
-    ){
+    public function __construct(ObjectManager $manager)
+    {
         $this->manager = $manager;
     }
 
